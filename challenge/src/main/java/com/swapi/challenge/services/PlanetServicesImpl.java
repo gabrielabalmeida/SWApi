@@ -32,11 +32,8 @@ public class PlanetServicesImpl implements PlanetServices {
         if (listPlanetRequestBean != null) {
             for (PlanetRequestBean planetRequestBean : listPlanetRequestBean.results) {
                 planetRequestBean.setIn(true);
-                if (!planets.toString().isEmpty()) {
-                    planets.toIterable().forEach(planet -> {
-                        if (planet.getName().equals(planetRequestBean.getName()))
-                            planetRequestBean.setIn(false);
-                    });
+                if (!planets.toString().isEmpty() && planets.toString().contains(planetRequestBean.getName())) {
+                        planetRequestBean.setIn(false);
                 } else planetRequestBean.setIn(true);
                 if(planetRequestBean.isIn()){
                     plt.setId(UUID.randomUUID().toString());
