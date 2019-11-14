@@ -20,11 +20,17 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url "https://plugins.gradle.org/m2/"
+	}
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	compile group: 'software.amazon.awssdk', name: 'dynamodb', version: '2.10.15'
+	compile group: 'com.github.derjust', name: 'spring-data-dynamodb', version: '5.1.0'
+	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.671'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

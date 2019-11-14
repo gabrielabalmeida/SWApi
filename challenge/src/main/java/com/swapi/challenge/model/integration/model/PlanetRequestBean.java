@@ -16,6 +16,7 @@ public class PlanetRequestBean {
     // private ArrayList<String> residents;
     private List<String> films;
     private Integer filmsBd;
+    private boolean isIn;
     // private String url;
     // private String created;
     // private String edited;
@@ -59,6 +60,14 @@ public class PlanetRequestBean {
 
     public void setFilmsBd(Integer filmsBd) {
         this.filmsBd = filmsBd;
+    }
+
+    public boolean isIn() {
+        return isIn;
+    }
+
+    public void setIn(boolean in) {
+        isIn = in;
     }
 
     // public String getUrl() { return url; }

@@ -1,10 +1,8 @@
 package com.swapi.challenge.services;
 
 
+import com.swapi.challenge.controller.request.PlanetRequest;
 import com.swapi.challenge.model.Planet;
-
-import com.swapi.challenge.model.integration.model.PlanetRequestBean;
-import org.springframework.data.mongodb.core.query.Update;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,7 +16,9 @@ public interface PlanetServices {
 
     Mono<Planet> addPlanet(Planet planet);
 
-    Flux<Planet> updatePlanet(String id, Planet planet);
+    Flux<Planet> updatePlanet(String id, PlanetRequest planet);
 
     void removePlanetById(String id);
+
+    void removeAll();
 }

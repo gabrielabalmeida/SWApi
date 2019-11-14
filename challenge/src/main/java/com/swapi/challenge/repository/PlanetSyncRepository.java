@@ -1,11 +1,12 @@
 package com.swapi.challenge.repository;
 
 import com.swapi.challenge.model.Planet;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface PlanetSyncRepository extends MongoRepository<Planet, String> {
+@Repository
+public interface PlanetSyncRepository extends CrudRepository<Planet, String> {
     List<Planet> findByName(String name);
-
 }
