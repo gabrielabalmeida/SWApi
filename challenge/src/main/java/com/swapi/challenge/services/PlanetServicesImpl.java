@@ -7,13 +7,11 @@ import com.swapi.challenge.model.integration.model.ListPlanetRequestBean;
 import com.swapi.challenge.model.integration.model.PlanetRequestBean;
 import com.swapi.challenge.repository.PlanetRepository;
 
-import com.swapi.challenge.repository.PlanetSyncRepository;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,11 +19,8 @@ public class PlanetServicesImpl implements PlanetServices {
 
     private final PlanetRepository planetRepository;
 
-//    private final PlanetSyncRepository planetSyncRepository;
-
     public PlanetServicesImpl(PlanetRepository planetRepository) {
         this.planetRepository = planetRepository;
-//        this.planetSyncRepository = planetSyncRepository;
     }
 
     private void savePlanet(Flux<Planet> planets, ListPlanetRequestBean listPlanetRequestBean, Planet plt){
@@ -41,7 +36,7 @@ public class PlanetServicesImpl implements PlanetServices {
                     plt.setClimate(planetRequestBean.getClimate());
                     plt.setTerrain(planetRequestBean.getTerrain());
                     plt.setFilms(planetRequestBean.getFilms().size());
-                    planetRepository.save(plt);
+                    this.planetRepository.save(plt);
                 }
             }
         }
@@ -50,12 +45,12 @@ public class PlanetServicesImpl implements PlanetServices {
     @Override
     public Flux<Planet> getAll() {
         Planet plt = new Planet();
-        Flux<Planet> planetsList =  planetRepository.findAll();
+        Flux<Planet> planetsList =  this.planetRepository.findAll();
         ListPlanetRequestBean listPlanetRequestBean = PlanetSwApi.getAllPlanetsSw();
 
         this.savePlanet(planetsList, listPlanetRequestBean, plt);
 
-        return planetRepository.findAll();
+        return this.planetRepository.findAll();
     }
 
     @Override
@@ -66,7 +61,7 @@ public class PlanetServicesImpl implements PlanetServices {
 
         this.savePlanet(planets.flux(), listPlanetRequestBean, plt);
 
-        return planetRepository.findByName(name).flux();
+        return this.planetRepository.findByName(name).flux();
     }
 
     @Override

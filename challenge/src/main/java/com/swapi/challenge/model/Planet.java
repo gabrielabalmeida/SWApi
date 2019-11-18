@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@DynamoDBTable(tableName = "Planets")
+@DynamoDBTable(tableName = "planets")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Planet {
 

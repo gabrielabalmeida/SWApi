@@ -24,7 +24,7 @@ public class DynamoDBConfig {
     public DynamoDbAsyncClient getDynamoAsyncClient(){
         return DynamoDbAsyncClient.builder()
                 .region(Region.SA_EAST_1)
-                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("fakeMyKeyId","fakeSecretAccessKey")))
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("teste1","teste2")))
                 .endpointOverride(URI.create("http://localhost:8000")).build();
     }
 
