@@ -65,8 +65,8 @@ public class PlanetServicesImpl implements PlanetServices {
     }
 
     @Override
-    public Mono<Planet> findById(String id){
-        return this.planetRepository.findById(id);
+    public Mono<Planet> findById(String uuid){
+        return this.planetRepository.findById(uuid);
     }
 
     @Override

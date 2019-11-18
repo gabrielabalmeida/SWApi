@@ -24,9 +24,14 @@ public class PlanetRepositoryImpl implements PlanetRepository{
     public Mono<Planet> findByName(String name) {
         Map<String, AttributeValue> key = new HashMap<>();
         key.put("name", AttributeValue.builder().s(name).build());
-        return Mono.fromFuture(this.dynamoDbAsyncClient.getItem(GetItemRequest.builder().tableName(this.tableName).key(key).build())
+        return Mono.fromFuture(this.dynamoDbAsyncClient
+                .getItem(GetItemRequest
+                        .builder()
+                        .tableName(this.tableName)
+                        .key(key)
+                        .build())
                 .thenApplyAsync(GetItemResponse::item)
-                .thenApply(Planet::new));
+                .thenApply(item -> item.isEmpty() ? null : new Planet(item)));
     }
 
     @Override
@@ -39,9 +44,9 @@ public class PlanetRepositoryImpl implements PlanetRepository{
     }
 
     @Override
-    public Mono<Planet> findById(String id) {
+    public Mono<Planet> findById(String uuid) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("id", AttributeValue.builder().s(id).build());
+        key.put("uuid", AttributeValue.builder().s(uuid).build());
         return Mono.fromFuture(this.dynamoDbAsyncClient
                 .getItem(GetItemRequest
                         .builder()
@@ -49,7 +54,8 @@ public class PlanetRepositoryImpl implements PlanetRepository{
                         .key(key)
                         .build())
                 .thenApplyAsync(GetItemResponse::item)
-                .thenApply(Planet::new));    }
+                .thenApply(item -> item.isEmpty() ? null : new Planet(item)));
+    }
 
     @Override
     public Mono<Planet> save(Planet planet) {
@@ -62,9 +68,9 @@ public class PlanetRepositoryImpl implements PlanetRepository{
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(String uuid) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("id", AttributeValue.builder().s(id).build());
+        key.put("uuid", AttributeValue.builder().s(uuid).build());
          this.dynamoDbAsyncClient
         .deleteItem(DeleteItemRequest.builder()
                 .tableName(this.tableName)

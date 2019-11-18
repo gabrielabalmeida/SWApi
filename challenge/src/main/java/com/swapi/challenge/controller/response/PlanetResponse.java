@@ -53,12 +53,4 @@ public class PlanetResponse {
         this.films = films;
     }
 
-    public PlanetResponse toResponse(Planet planet) {
-        this.name = planet.getName();
-        this.climate = planet.getClimate();
-        this.terrain = planet.getTerrain();
-        this.films = planet.getFilms();
-        return this;
-    }
-
 }

@@ -6,13 +6,15 @@ import com.swapi.challenge.model.Planet;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 public interface PlanetServices {
 
     Flux<Planet> getAll();
 
     Flux<Planet> findByName(String name);
 
-    Mono<Planet> findById(String id);
+    Mono<Planet> findById(String uuid);
 
     Mono<Planet> addPlanet(Planet planet);
 

@@ -1,20 +1,25 @@
 package com.swapi.challenge.controller;
 
+import com.swapi.challenge.config.DynamoDBConfig;
 import com.swapi.challenge.controller.request.PlanetRequest;
+import com.swapi.challenge.controller.response.HealthResponse;
 import com.swapi.challenge.controller.response.PlanetResponse;
 import com.swapi.challenge.model.Planet;
 import com.swapi.challenge.services.PlanetServices;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
 import javax.validation.Valid;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/planets")
@@ -23,6 +28,9 @@ public class PlanetController {
     private Logger logger = LoggerFactory.getLogger(PlanetController.class);
 
     private final PlanetServices planetServices;
+
+    @Autowired
+    private DynamoDBConfig dynamoDBConfig;
 
     public PlanetController(PlanetServices planetServices) {
         this.planetServices = planetServices;
@@ -81,11 +89,11 @@ public class PlanetController {
                 });
     }
 
-    @PostMapping(path = "/findId/{id}")
-    public @ResponseBody Mono<ResponseEntity<PlanetResponse>> searchById(@PathVariable(name = "id") String id) {
+    @PostMapping(path = "/findId/{uuid}")
+    public @ResponseBody Mono<ResponseEntity<PlanetResponse>> searchById(@PathVariable(name = "uuid") String uuid) {
 
         return this.planetServices
-                .findById(id)
+                .findById(uuid)
                 .map(PlanetResponse::new)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build())
@@ -102,5 +110,19 @@ public class PlanetController {
         return ResponseEntity.ok(this.planetServices
                 .findByName(name)
                 .flatMap(planet1 -> Flux.just(ResponseEntity.ok(new PlanetResponse(planet1)))));
+    }
+
+
+    @GetMapping("/health")
+    public Mono<ResponseEntity> health() throws ExecutionException, InterruptedException {
+        this.dynamoDBConfig.getDynamoAsyncClient().createTable(CreateTableRequest.builder()
+                .tableName("planets")
+                .keySchema(KeySchemaElement.builder()
+                        .attributeName("uuid").keyType(KeyType.HASH)
+                        .build())
+                .attributeDefinitions(AttributeDefinition.builder().attributeName("uuid").attributeType(ScalarAttributeType.S).build())
+                .provisionedThroughput(ProvisionedThroughput.builder().readCapacityUnits(10l).writeCapacityUnits(10l).build())
+                .build());
+        return Mono.just(new HealthResponse()).map(ResponseEntity::ok);
     }
 }
