@@ -49,14 +49,6 @@ public class PlanetController {
     public @ResponseBody ResponseEntity<?> createPlanets(@RequestBody PlanetRequestBean planets) {
         return ResponseEntity.ok(this.planetServices
                 .addPlanet(planets));
-//                .flatMap(planet1 -> {
-//                    //UriBuilder
-//                    return Mono.justOrEmpty(ResponseEntity.ok(new PlanetResponse(planet1)));
-//                }).doOnSuccess(planetResponseEntity -> {
-//                    this.logger.info("Planeta inserido com sucesso: [{}] ", planetResponseEntity);
-//                }).doOnError(err -> {
-//                    this.logger.error("Falha ao inserir o planeta: ", err);
-//                });
     }
 
     @DeleteMapping(path="/{id}")

@@ -5,7 +5,6 @@ import com.swapi.challenge.controller.request.PlanetRequest;
 import com.swapi.challenge.model.Planet;
 import com.swapi.challenge.model.integration.model.ListPlanetResponseBean;
 import com.swapi.challenge.model.integration.model.PlanetRequestBean;
-import com.swapi.challenge.model.integration.model.PlanetResponseBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -1,4 +1,4 @@
-package com.swapi.challenge.services;
+package com.swapi.challenge.services.impl;
 
 import com.swapi.challenge.controller.request.PlanetRequest;
 import com.swapi.challenge.model.Planet;
@@ -6,16 +6,13 @@ import com.swapi.challenge.model.integration.model.ListPlanetResponseBean;
 import com.swapi.challenge.model.integration.model.PlanetRequestBean;
 import com.swapi.challenge.repository.PlanetRepository;
 
-import com.swapi.challenge.swapi.service.SwAPIService;
+import com.swapi.challenge.services.PlanetServices;
+import com.swapi.challenge.swapi.service.impl.SwAPIServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class PlanetServicesImpl implements PlanetServices {
@@ -23,35 +20,11 @@ public class PlanetServicesImpl implements PlanetServices {
     private final PlanetRepository planetRepository;
 
     @Autowired
-    private SwAPIService swAPIService;
+    private SwAPIServiceImpl swAPIService;
 
     public PlanetServicesImpl(PlanetRepository planetRepository) {
         this.planetRepository = planetRepository;
     }
-
-//    private void savePlanet(Flux<Planet> planets, Lis listPlanetResponseBean) {
-//
-//
-//        Planet plt = new Planet();
-//        if (listPlanetResponseBean != null) {
-//            for (PlanetRequestBean planetRequestBean : listPlanetResponseBean.results) {
-//                planetRequestBean.setIn(true);
-//
-//
-//                if (!planets.toString().isEmpty() && planets.toString().contains(planetRequestBean.getName())) {
-//                    planetRequestBean.setIn(false);
-//                } else planetRequestBean.setIn(true);
-//                if (planetRequestBean.isIn()) {
-//                    plt.setUuid(UUID.randomUUID().toString());
-//                    plt.setName(planetRequestBean.getName());
-//                    plt.setClimate(planetRequestBean.getClimate());
-//                    plt.setTerrain(planetRequestBean.getTerrain());
-//                    plt.setFilms(planetRequestBean.getFilms().size());
-//                    this.planetRepository.save(plt);
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public Flux<Planet> getAll() {
@@ -66,19 +39,26 @@ public class PlanetServicesImpl implements PlanetServices {
 
     @Override
     public Mono<ListPlanetResponseBean> addPlanet(PlanetRequestBean planet) {
-
         return this.swAPIService
                 .findPlanetByName(planet.getName())
                 .map(planetResponseBean -> {
-                    planet.setFilms(planetResponseBean.results
-                            .stream()
-                            .findFirst().get().getFilms().size());
+
+                    if(planetResponseBean.results.stream().findFirst().get().getName().equals(planet.getName())){
+                        planet.setClimate(planetResponseBean.results
+                                .stream()
+                                .findFirst().get().getClimate());
+                        planet.setTerrain(planetResponseBean.results
+                                .stream()
+                                .findFirst().get().getTerrain());
+                        planet.setFilms(planetResponseBean.results
+                                .stream()
+                                .findFirst().get().getFilms().size());
+                    }
 
                     this.planetRepository.save(planet.toModel());
 
                     return planetResponseBean;
                 });
-
     }
 
     @Override
