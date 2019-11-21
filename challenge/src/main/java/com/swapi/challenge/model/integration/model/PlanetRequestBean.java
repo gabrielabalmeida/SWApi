@@ -1,6 +1,6 @@
 package com.swapi.challenge.model.integration.model;
 
-import java.util.List;
+import com.swapi.challenge.model.Planet;
 
 public class PlanetRequestBean {
 
@@ -14,8 +14,7 @@ public class PlanetRequestBean {
     private String terrain;
     // private String surface_water;
     // private ArrayList<String> residents;
-    private List<String> films;
-    private Integer filmsBd;
+    private Integer films;
     private boolean isIn;
     // private String url;
     // private String created;
@@ -51,16 +50,8 @@ public class PlanetRequestBean {
     // public ArrayList<String> getResidents() { return residents; }
     // public void setResidents(ArrayList<String> residents) { this.films = residents; }
 
-    public List<String> getFilms() { return films; }
-    public void setFilms(List<String> films) { this.films = films; }
-
-    public Integer getFilmsBd() {
-        return filmsBd;
-    }
-
-    public void setFilmsBd(Integer filmsBd) {
-        this.filmsBd = filmsBd;
-    }
+    public Integer getFilms() { return films; }
+    public void setFilms(Integer films) { this.films = films; }
 
     public boolean isIn() {
         return isIn;
@@ -79,4 +70,12 @@ public class PlanetRequestBean {
     // public String getEdited() { return edited; }
     // public void setEdited(String edited) { this.edited = edited; }
 
+    public Planet toModel() {
+        Planet planet = new Planet();
+        planet.setName(this.getName());
+        planet.setClimate(this.getClimate());
+        planet.setTerrain(this.getTerrain());
+        planet.setFilms(this.getFilms());
+        return planet;
+    }
 }

@@ -26,7 +26,6 @@ repositories {
 }
 
 dependencies {
-//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	compile group: 'software.amazon.awssdk', name: 'dynamodb', version: '2.10.15'
 	compile group: 'com.github.derjust', name: 'spring-data-dynamodb', version: '5.1.0'

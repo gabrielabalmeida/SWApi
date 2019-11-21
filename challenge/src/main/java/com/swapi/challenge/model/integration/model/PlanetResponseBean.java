@@ -1,5 +1,7 @@
 package com.swapi.challenge.model.integration.model;
 
+import com.swapi.challenge.model.Planet;
+
 import java.util.ArrayList;
 
 public class PlanetResponseBean {
@@ -8,10 +10,6 @@ public class PlanetResponseBean {
     private String climate;
     private String terrain;
     private ArrayList<String> films;
-
-    public ArrayList<String> getFilms() { return films; }
-
-    public void setFilms(ArrayList<String> films) { this.films = films; }
 
     public String getName() { return name; }
 
@@ -33,5 +31,28 @@ public class PlanetResponseBean {
 
     public void setTerrain(String terrain) {
         this.terrain = terrain;
+    }
+
+    public ArrayList<String> getFilms() { return films; }
+
+    public void setFilms(ArrayList<String> films) { this.films = films; }
+
+    @Override
+    public String toString() {
+        return "PlanetRequest{" +
+                "name='" + name + '\'' +
+                ", climate='" + climate + '\'' +
+                ", terrain='" + terrain + '\'' +
+                ", films='" + films + '\'' +
+                '}';
+    }
+
+    public Planet toModel() {
+        Planet planet = new Planet();
+        planet.setName(this.getName());
+        planet.setClimate(this.getClimate());
+        planet.setTerrain(this.getTerrain());
+        planet.setFilms(this.getFilms().size());
+        return planet;
     }
 }

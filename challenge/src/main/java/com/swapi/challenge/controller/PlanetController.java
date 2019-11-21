@@ -4,7 +4,7 @@ import com.swapi.challenge.config.DynamoDBConfig;
 import com.swapi.challenge.controller.request.PlanetRequest;
 import com.swapi.challenge.controller.response.HealthResponse;
 import com.swapi.challenge.controller.response.PlanetResponse;
-import com.swapi.challenge.model.Planet;
+import com.swapi.challenge.model.integration.model.PlanetRequestBean;
 import com.swapi.challenge.services.PlanetServices;
 
 import org.slf4j.Logger;
@@ -46,9 +46,9 @@ public class PlanetController {
     }
 
     @PostMapping
-    public @ResponseBody ResponseEntity<?> createPlanets(@RequestBody PlanetRequest planets) {
+    public @ResponseBody ResponseEntity<?> createPlanets(@RequestBody PlanetRequestBean planets) {
         return ResponseEntity.ok(this.planetServices
-                .addPlanet(planets.toModel()));
+                .addPlanet(planets));
 //                .flatMap(planet1 -> {
 //                    //UriBuilder
 //                    return Mono.justOrEmpty(ResponseEntity.ok(new PlanetResponse(planet1)));
@@ -89,7 +89,7 @@ public class PlanetController {
                 });
     }
 
-    @PostMapping(path = "/findId/{uuid}")
+    @GetMapping(path = "/{uuid}")
     public @ResponseBody Mono<ResponseEntity<PlanetResponse>> searchById(@PathVariable(name = "uuid") String uuid) {
 
         return this.planetServices
@@ -102,14 +102,6 @@ public class PlanetController {
                 }).doOnError(err -> {
                     this.logger.info("Falha ao atualizar o planeta: ", err);
                 });
-    }
-
-    @PostMapping(path = "/findName/{name}")
-    public @ResponseBody ResponseEntity<?> searchByName(@PathVariable(name = "name") String name) {
-
-        return ResponseEntity.ok(this.planetServices
-                .findByName(name)
-                .flatMap(planet1 -> Flux.just(ResponseEntity.ok(new PlanetResponse(planet1)))));
     }
 
 

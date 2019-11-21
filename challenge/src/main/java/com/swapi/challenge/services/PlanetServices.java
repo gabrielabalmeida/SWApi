@@ -3,20 +3,19 @@ package com.swapi.challenge.services;
 
 import com.swapi.challenge.controller.request.PlanetRequest;
 import com.swapi.challenge.model.Planet;
+import com.swapi.challenge.model.integration.model.ListPlanetResponseBean;
+import com.swapi.challenge.model.integration.model.PlanetRequestBean;
+import com.swapi.challenge.model.integration.model.PlanetResponseBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Optional;
 
 public interface PlanetServices {
 
     Flux<Planet> getAll();
 
-    Flux<Planet> findByName(String name);
-
     Mono<Planet> findById(String uuid);
 
-    Mono<Planet> addPlanet(Planet planet);
+    Mono<ListPlanetResponseBean> addPlanet(PlanetRequestBean planet);
 
     Flux<Planet> updatePlanet(String id, PlanetRequest planet);
 

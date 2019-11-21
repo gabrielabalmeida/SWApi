@@ -1,5 +1,6 @@
 package com.swapi.challenge.repository;
 
+import com.swapi.challenge.controller.response.PlanetResponse;
 import com.swapi.challenge.model.Planet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,19 +21,19 @@ public class PlanetRepositoryImpl implements PlanetRepository{
 
     private final String tableName = "planets";
 
-    @Override
-    public Mono<Planet> findByName(String name) {
-        Map<String, AttributeValue> key = new HashMap<>();
-        key.put("name", AttributeValue.builder().s(name).build());
-        return Mono.fromFuture(this.dynamoDbAsyncClient
-                .getItem(GetItemRequest
-                        .builder()
-                        .tableName(this.tableName)
-                        .key(key)
-                        .build())
-                .thenApplyAsync(GetItemResponse::item)
-                .thenApply(item -> item.isEmpty() ? null : new Planet(item)));
-    }
+//    @Override
+//    public Mono<Planet> findByName(String name) {
+//        Map<String, AttributeValue> key = new HashMap<>();
+//        key.put("name", AttributeValue.builder().s(name).build());
+//        return Mono.fromFuture(this.dynamoDbAsyncClient
+//                .getItem(GetItemRequest
+//                        .builder()
+//                        .tableName(this.tableName)
+//                        .key(key)
+//                        .build())
+//                .thenApplyAsync(GetItemResponse::item)
+//                .thenApply(item -> item.isEmpty() ? null : new Planet(item)));
+//    }
 
     @Override
     public Flux<Planet> findAll() {
@@ -85,6 +86,5 @@ public class PlanetRepositoryImpl implements PlanetRepository{
                         .tableName(this.tableName)
                         .build());
     }
-
 
 }
