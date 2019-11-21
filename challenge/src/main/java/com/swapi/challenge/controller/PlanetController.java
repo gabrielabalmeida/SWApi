@@ -29,20 +29,18 @@ public class PlanetController {
 
     private final PlanetServices planetServices;
 
-    @Autowired
-    private DynamoDBConfig dynamoDBConfig;
+    private final DynamoDBConfig dynamoDBConfig;
 
-    public PlanetController(PlanetServices planetServices) {
+    public PlanetController(PlanetServices planetServices, DynamoDBConfig dynamoDBConfig) {
         this.planetServices = planetServices;
+        this.dynamoDBConfig = dynamoDBConfig;
     }
 
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAll() {
         return ResponseEntity.ok(this.planetServices
                 .getAll()
-                .doOnComplete(() -> {
-                    this.logger.info("Finalizou a busca de planetas.");
-                }));
+                .doOnComplete(() -> this.logger.info("Finalizou a busca de planetas.")));
     }
 
     @PostMapping
@@ -74,11 +72,10 @@ public class PlanetController {
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build())
                 .next()
-                .doOnSuccess(planetResponseEntity -> {
-                    this.logger.info("Planeta atualizado com sucesso: [{}] ", planetResponseEntity);
-                }).doOnError(err -> {
-                    this.logger.info("Falha ao atualizar o planeta: ", err);
-                });
+                .doOnSuccess(planetResponseEntity ->
+                        this.logger.info("Planeta atualizado com sucesso: [{}] ", planetResponseEntity))
+                .doOnError(err ->
+                    this.logger.info("Falha ao atualizar o planeta: ", err));
     }
 
     @GetMapping(path = "/{uuid}")
@@ -89,23 +86,22 @@ public class PlanetController {
                 .map(PlanetResponse::new)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build())
-                .doOnSuccess(planetResponseEntity -> {
-                    this.logger.info("Planeta atualizado com sucesso: [{}] ", planetResponseEntity);
-                }).doOnError(err -> {
-                    this.logger.info("Falha ao atualizar o planeta: ", err);
-                });
+                .doOnSuccess(planetResponseEntity ->
+                        this.logger.info("Planeta atualizado com sucesso: [{}] ", planetResponseEntity))
+                .doOnError(err ->
+                        this.logger.info("Falha ao atualizar o planeta: ", err));
     }
 
 
     @GetMapping("/health")
-    public Mono<ResponseEntity> health() throws ExecutionException, InterruptedException {
+    public Mono<ResponseEntity> health() {
         this.dynamoDBConfig.getDynamoAsyncClient().createTable(CreateTableRequest.builder()
                 .tableName("planets")
                 .keySchema(KeySchemaElement.builder()
                         .attributeName("uuid").keyType(KeyType.HASH)
                         .build())
                 .attributeDefinitions(AttributeDefinition.builder().attributeName("uuid").attributeType(ScalarAttributeType.S).build())
-                .provisionedThroughput(ProvisionedThroughput.builder().readCapacityUnits(10l).writeCapacityUnits(10l).build())
+                .provisionedThroughput(ProvisionedThroughput.builder().readCapacityUnits(10L).writeCapacityUnits(10L).build())
                 .build());
         return Mono.just(new HealthResponse()).map(ResponseEntity::ok);
     }

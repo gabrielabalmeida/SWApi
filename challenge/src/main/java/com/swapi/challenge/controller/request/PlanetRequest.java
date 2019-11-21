@@ -1,7 +1,5 @@
 package com.swapi.challenge.controller.request;
 
-import com.swapi.challenge.model.Planet;
-
 public class PlanetRequest {
 
     private String name;
@@ -52,14 +50,5 @@ public class PlanetRequest {
                 ", terrain='" + terrain + '\'' +
                 ", films='" + films + '\'' +
                 '}';
-    }
-
-    public Planet toModel() {
-        Planet planet = new Planet();
-        planet.setName(this.getName());
-        planet.setClimate(this.getClimate());
-        planet.setTerrain(this.getTerrain());
-        planet.setFilms(this.getFilms());
-        return planet;
     }
 }

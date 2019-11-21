@@ -2,7 +2,7 @@ package com.swapi.challenge.services.impl;
 
 import com.swapi.challenge.controller.request.PlanetRequest;
 import com.swapi.challenge.model.Planet;
-import com.swapi.challenge.model.integration.model.ListPlanetResponseBean;
+import com.swapi.challenge.model.integration.model.list.ListPlanetResponseBean;
 import com.swapi.challenge.model.integration.model.PlanetRequestBean;
 import com.swapi.challenge.repository.PlanetRepository;
 
@@ -43,7 +43,7 @@ public class PlanetServicesImpl implements PlanetServices {
                 .findPlanetByName(planet.getName())
                 .map(planetResponseBean -> {
 
-                    if(planetResponseBean.results.stream().findFirst().get().getName().equals(planet.getName())){
+                    if (planetResponseBean.results.stream().findFirst().get().getName().equals(planet.getName())) {
                         planet.setClimate(planetResponseBean.results
                                 .stream()
                                 .findFirst().get().getClimate());

@@ -19,9 +19,6 @@ public class PlanetResponse {
         this.films = planet.getFilms();
     }
 
-    public PlanetResponse() {
-    }
-
     @DynamoDBAttribute
     public String getName() {
         return name;

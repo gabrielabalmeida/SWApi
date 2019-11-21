@@ -11,3 +11,6 @@ amazon:
   aws:
     accesskey: teste1
     secretkey: teste1
+
+swapi:
+  url: https://swapi.co/api/planets/

@@ -47,12 +47,4 @@ public class PlanetResponseBean {
                 '}';
     }
 
-    public Planet toModel() {
-        Planet planet = new Planet();
-        planet.setName(this.getName());
-        planet.setClimate(this.getClimate());
-        planet.setTerrain(this.getTerrain());
-        planet.setFilms(this.getFilms().size());
-        return planet;
-    }
 }

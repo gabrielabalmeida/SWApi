@@ -6,14 +6,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.swapi.challenge.controller.request.PlanetRequest;
-import com.swapi.challenge.model.integration.model.PlanetRequestBean;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 
 @DynamoDBTable(tableName = "planets")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -27,22 +24,6 @@ public class Planet {
 
 
     public Planet() {
-    }
-
-    public Planet(PlanetRequestBean planet) {
-        this.uuid = UUID.randomUUID().toString();
-        this.name = planet.getName();
-        this.climate = planet.getClimate();
-        this.terrain = planet.getTerrain();
-        this.films = planet.getFilms();
-    }
-
-    public Planet(PlanetRequest planet) {
-        this.uuid = UUID.randomUUID().toString();
-        this.name = planet.getName();
-        this.climate = planet.getClimate();
-        this.terrain = planet.getTerrain();
-        this.films = planet.getFilms();
     }
 
     public Planet(Map<String, AttributeValue> plan){

@@ -7,7 +7,6 @@ import reactor.core.publisher.Mono;
 
 public interface PlanetRepository {
 
-//    Mono<Planet> findByName(String name);
     Flux<Planet> findAll();
     Mono<Planet> findById(String id);
     Mono<Planet> save(Planet planet);

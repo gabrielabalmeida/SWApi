@@ -1,7 +1,7 @@
 package com.swapi.challenge.swapi.service.impl;
 
-import com.swapi.challenge.config.SwapiConfig;
-import com.swapi.challenge.model.integration.model.ListPlanetResponseBean;
+import com.swapi.challenge.swapi.config.SwapiConfig;
+import com.swapi.challenge.model.integration.model.list.ListPlanetResponseBean;
 import com.swapi.challenge.swapi.service.SwAPIService;
 
 import org.springframework.beans.factory.annotation.Autowired;
